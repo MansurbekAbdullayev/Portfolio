@@ -1,0 +1,72 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Manage Messages{% endblock %}
+{% block header_title %}Inbox Messages{% endblock %}
+
+{% block admin_content %}
+<div class="bg-white border border-slate-200 p-6 shadow-sm">
+    <div class="mb-6 border-b border-slate-100 pb-4 flex justify-between items-center">
+        <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-black">Contact Form Inbox</h3>
+            <p class="text-[11px] text-slate-400 mt-1">View comments, suggestions, or job inquiries submitted by site visitors.</p>
+        </div>
+    </div>
+
+    <!-- Messages list -->
+    <div class="space-y-6">
+        {% if messages %}
+            {% for msg in messages %}
+            <div class="p-6 border {% if msg.is_read == 0 %}border-l-4 border-l-black bg-slate-50 border-slate-200{% else %}border-slate-100 bg-white{% endif %} flex flex-col gap-4 relative">
+                <!-- Header details -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-3 border-b border-slate-150 border-dashed">
+                    <div class="space-y-0.5">
+                        <div class="flex items-center gap-3">
+                            <h4 class="text-sm font-extrabold text-black uppercase tracking-wider">{{ msg.name }}</h4>
+                            {% if msg.is_read == 0 %}
+                            <span class="text-[8px] font-extrabold bg-rose-600 text-white px-2 py-0.5 uppercase tracking-widest">New</span>
+                            {% endif %}
+                        </div>
+                        <a href="mailto:{{ msg.email }}" class="text-xs font-semibold text-slate-500 hover:text-black hover-interactive">{{ msg.email }}</a>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-medium">
+                        <i class="fa-regular fa-clock mr-1"></i> {{ msg.created_at }}
+                    </div>
+                </div>
+
+                <!-- Body message -->
+                <div class="text-xs md:text-sm">
+                    <span class="block text-[10px] font-bold text-black uppercase tracking-wider mb-1">Subject: {{ msg.subject }}</span>
+                    <p class="text-slate-600 leading-relaxed whitespace-pre-line">{{ msg.message }}</p>
+                </div>
+
+                <!-- Footer Operations -->
+                <div class="flex justify-end gap-3 pt-3 border-t border-slate-100">
+                    <form action="{{ url_for('message_read', id=msg.id) }}" method="POST" class="inline-block">
+                        <button type="submit" class="px-4 py-2 border border-slate-250 text-[10px] font-bold uppercase tracking-widest hover:border-black transition-all bg-white hover-interactive">
+                            {% if msg.is_read == 0 %}
+                                <i class="fa-solid fa-check mr-1.5"></i> Mark as Read
+                            {% else %}
+                                <i class="fa-solid fa-envelope mr-1.5"></i> Mark as Unread
+                            {% endif %}
+                        </button>
+                    </form>
+                    <form action="{{ url_for('message_delete', id=msg.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this message permanently?');" class="inline-block">
+                        <button type="submit" class="px-4 py-2 border border-slate-250 hover:border-rose-600 text-slate-400 hover:text-rose-600 text-[10px] font-bold uppercase tracking-widest transition-all bg-white hover-interactive">
+                            <i class="fa-solid fa-trash-can mr-1.5"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-12">
+                <div class="w-12 h-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center mx-auto mb-4 text-slate-400">
+                    <i class="fa-solid fa-inbox text-lg"></i>
+                </div>
+                <h4 class="text-xs font-bold text-black uppercase">No Messages</h4>
+                <p class="text-[11px] text-slate-400 mt-1">Your inbox is clean. Any contact form submissions will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

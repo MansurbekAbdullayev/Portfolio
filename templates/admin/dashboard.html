@@ -1,0 +1,135 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block header_title %}System Dashboard{% endblock %}
+
+{% block admin_content %}
+<!-- Stats Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <!-- Projects Stat -->
+    <div class="bg-white border border-slate-200 p-6 shadow-sm flex items-center justify-between">
+        <div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Projects</span>
+            <span class="text-3xl font-extrabold text-black mt-1 block">{{ project_count }}</span>
+        </div>
+        <div class="w-12 h-12 bg-slate-50 border border-slate-200 text-black flex items-center justify-center text-lg">
+            <i class="fa-solid fa-folder-open"></i>
+        </div>
+    </div>
+
+    <!-- Skills Stat -->
+    <div class="bg-white border border-slate-200 p-6 shadow-sm flex items-center justify-between">
+        <div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Skills</span>
+            <span class="text-3xl font-extrabold text-black mt-1 block">{{ skill_count }}</span>
+        </div>
+        <div class="w-12 h-12 bg-slate-50 border border-slate-200 text-black flex items-center justify-center text-lg">
+            <i class="fa-solid fa-star"></i>
+        </div>
+    </div>
+
+    <!-- Services Stat -->
+    <div class="bg-white border border-slate-200 p-6 shadow-sm flex items-center justify-between">
+        <div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Services</span>
+            <span class="text-3xl font-extrabold text-black mt-1 block">{{ service_count }}</span>
+        </div>
+        <div class="w-12 h-12 bg-slate-50 border border-slate-200 text-black flex items-center justify-center text-lg">
+            <i class="fa-solid fa-cubes"></i>
+        </div>
+    </div>
+
+    <!-- Messages Stat -->
+    <div class="bg-white border border-slate-200 p-6 shadow-sm flex items-center justify-between">
+        <div>
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">New Messages</span>
+            <span class="text-3xl font-extrabold {% if unread_messages > 0 %}text-rose-600{% else %}text-black{% endif %} mt-1 block">{{ unread_messages }}</span>
+        </div>
+        <div class="w-12 h-12 {% if unread_messages > 0 %}bg-rose-50 border-rose-200 text-rose-600{% else %}bg-slate-50 border-slate-200 text-black{% endif %} border flex items-center justify-center text-lg">
+            <i class="fa-solid fa-envelope"></i>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- Unread Messages (Left) -->
+    <div class="lg:col-span-7 bg-white border border-slate-200 p-6 shadow-sm">
+        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-black">Recent Inquiries</h3>
+            <a href="{{ url_for('admin_messages') }}" class="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-black transition-all">View All</a>
+        </div>
+
+        <div class="space-y-4">
+            {% if recent_messages %}
+                {% for msg in recent_messages %}
+                <div class="p-4 border {% if msg.is_read == 0 %}border-l-4 border-l-black bg-slate-50 border-slate-200{% else %}border-slate-100 bg-white{% endif %} flex flex-col justify-between gap-2">
+                    <div class="flex justify-between items-start gap-4">
+                        <div>
+                            <h4 class="text-xs font-bold text-black uppercase">{{ msg.name }}</h4>
+                            <span class="text-[10px] text-slate-400">{{ msg.email }}</span>
+                        </div>
+                        <span class="text-[10px] font-semibold text-slate-400">{{ msg.created_at }}</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-black uppercase block">Subject: {{ msg.subject }}</span>
+                        <p class="text-slate-500 text-xs line-clamp-2 mt-1 leading-relaxed">{{ msg.message }}</p>
+                    </div>
+                    {% if msg.is_read == 0 %}
+                    <div class="pt-2 flex justify-end">
+                        <form action="{{ url_for('message_read', id=msg.id) }}" method="POST">
+                            <button type="submit" class="text-[9px] font-bold uppercase tracking-widest bg-black text-white px-2 py-1 hover:bg-neutral-800 transition-all">
+                                Mark as Read
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-xs text-slate-400 py-8 text-center">No contact messages received yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Projects (Right) -->
+    <div class="lg:col-span-5 bg-white border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-black">Recent Projects</h3>
+                <a href="{{ url_for('admin_projects') }}" class="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-black transition-all">View All</a>
+            </div>
+
+            <div class="space-y-4">
+                {% if recent_projects %}
+                    {% for proj in recent_projects %}
+                    <div class="flex gap-4 items-center p-3 border border-slate-100">
+                        <div class="w-16 h-12 bg-slate-100 border border-slate-200 overflow-hidden flex-shrink-0">
+                            {% if proj.image_url %}
+                            <img src="{{ url_for('static', filename=proj.image_url) }}" alt="" class="w-full h-full object-cover">
+                            {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-slate-300"><i class="fa-solid fa-code text-sm"></i></div>
+                            {% endif %}
+                        </div>
+                        <div class="min-w-0 flex-grow">
+                            <span class="text-[8px] font-bold uppercase text-slate-400 block">{{ proj.category }}</span>
+                            <h4 class="text-xs font-bold text-black uppercase truncate mt-0.5">{{ proj.title }}</h4>
+                        </div>
+                        <div>
+                            <a href="{{ url_for('project_edit', id=proj.id) }}" class="text-xs text-slate-400 hover:text-black"><i class="fa-solid fa-pen-to-square"></i></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-xs text-slate-400 py-8 text-center">No projects added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-100 mt-6">
+            <a href="{{ url_for('project_add') }}" class="block text-center py-3 bg-black text-white text-xs font-bold uppercase tracking-widest border border-black hover:bg-white hover:text-black transition-all">
+                <i class="fa-solid fa-plus mr-2"></i> Add New Project
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

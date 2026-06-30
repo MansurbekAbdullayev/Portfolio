@@ -1,0 +1,298 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Site Settings{% endblock %}
+{% block header_title %}Site Settings{% endblock %}
+
+{% block admin_content %}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- Left Panel: Profile settings and password -->
+    <div class="lg:col-span-8 space-y-8">
+        
+        <!-- General Information Settings Card -->
+        <div class="bg-white border border-slate-200 p-6 md:p-8 shadow-sm">
+            <div class="mb-6 border-b border-slate-100 pb-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-black">General Profile Information</h3>
+                <p class="text-[11px] text-slate-400 mt-1">Configure hero headers, contact details, coordinates, and professional biographies.</p>
+            </div>
+
+            <form action="{{ url_for('admin_settings') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <!-- Hero section fields -->
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label for="hero_title" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Hero Name (EN) *</label>
+                            <input type="text" id="hero_title" name="hero_title" required
+                                value="{{ settings.hero_title or '' }}"
+                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                        </div>
+                        <div>
+                            <label for="hero_title_uz" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Hero Name (UZ) *</label>
+                            <input type="text" id="hero_title_uz" name="hero_title_uz" required
+                                value="{{ settings.hero_title_uz or '' }}"
+                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                        </div>
+                        <div>
+                            <label for="hero_title_ru" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Hero Name (RU) *</label>
+                            <input type="text" id="hero_title_ru" name="hero_title_ru" required
+                                value="{{ settings.hero_title_ru or '' }}"
+                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label for="hero_subtitle" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Hero Role (EN) *</label>
+                            <input type="text" id="hero_subtitle" name="hero_subtitle" required
+                                value="{{ settings.hero_subtitle or '' }}"
+                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                        </div>
+                        <div>
+                            <label for="hero_subtitle_uz" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Hero Role (UZ) *</label>
+                            <input type="text" id="hero_subtitle_uz" name="hero_subtitle_uz" required
+                                value="{{ settings.hero_subtitle_uz or '' }}"
+                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                        </div>
+                        <div>
+                            <label for="hero_subtitle_ru" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Hero Role (RU) *</label>
+                            <input type="text" id="hero_subtitle_ru" name="hero_subtitle_ru" required
+                                value="{{ settings.hero_subtitle_ru or '' }}"
+                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Short Hero Introduction *</label>
+                    <div class="space-y-3">
+                        <textarea id="hero_description" name="hero_description" rows="2" required placeholder="(EN)"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 resize-none">{{ settings.hero_description or '' }}</textarea>
+                        <textarea id="hero_description_uz" name="hero_description_uz" rows="2" required placeholder="(UZ)"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 resize-none">{{ settings.hero_description_uz or '' }}</textarea>
+                        <textarea id="hero_description_ru" name="hero_description_ru" rows="2" required placeholder="(RU)"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 resize-none">{{ settings.hero_description_ru or '' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Biography -->
+                <div>
+                    <label class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Professional biography *</label>
+                    <div class="space-y-3">
+                        <textarea id="about_bio" name="about_bio" rows="3" required placeholder="(EN)"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 resize-none">{{ settings.about_bio or '' }}</textarea>
+                        <textarea id="about_bio_uz" name="about_bio_uz" rows="3" required placeholder="(UZ)"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 resize-none">{{ settings.about_bio_uz or '' }}</textarea>
+                        <textarea id="about_bio_ru" name="about_bio_ru" rows="3" required placeholder="(RU)"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 resize-none">{{ settings.about_bio_ru or '' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Contact and Coordinates -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label for="email" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Contact Email *</label>
+                        <input type="email" id="email" name="email" required
+                            value="{{ settings.email or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Contact Phone *</label>
+                        <input type="text" id="phone" name="phone" required
+                            value="{{ settings.phone or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label for="telegram" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Telegram Username (without @) *</label>
+                        <input type="text" id="telegram" name="telegram" required
+                            value="{{ settings.telegram or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                    <div>
+                        <label for="location" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Location Coordinates (EN) *</label>
+                        <input type="text" id="location" name="location" required
+                            value="{{ settings.location or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label for="location_uz" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Location Coordinates (UZ) *</label>
+                        <input type="text" id="location_uz" name="location_uz" required
+                            value="{{ settings.location_uz or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                    <div>
+                        <label for="location_ru" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Location Coordinates (RU) *</label>
+                        <input type="text" id="location_ru" name="location_ru" required
+                            value="{{ settings.location_ru or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label for="workplace" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Workplace Name *</label>
+                        <input type="text" id="workplace" name="workplace" required
+                            value="{{ settings.workplace or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                    <div>
+                        <label for="workplace_map_url" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Workplace Map URL *</label>
+                        <input type="text" id="workplace_map_url" name="workplace_map_url" required
+                            value="{{ settings.workplace_map_url or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                </div>
+
+                <!-- Social links -->
+                <div class="mb-6 border-b border-slate-100 pb-4 pt-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-black">Social Media Handles</h4>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div>
+                        <label for="github" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">GitHub Username</label>
+                        <input type="text" id="github" name="github"
+                            value="{{ settings.github or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                    <div>
+                        <label for="instagram" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Instagram Username</label>
+                        <input type="text" id="instagram" name="instagram"
+                            value="{{ settings.instagram or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                    <div>
+                        <label for="linkedin" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">LinkedIn Username</label>
+                        <input type="text" id="linkedin" name="linkedin"
+                            value="{{ settings.linkedin or '' }}"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                    </div>
+                </div>
+
+                <!-- Numeric Statistics -->
+                <div class="mb-6 border-b border-slate-100 pb-4 pt-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-black">Achievements Statistics</h4>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                    <div>
+                        <label for="stats_projects" class="block text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-2">Projects Completed *</label>
+                        <input type="text" id="stats_projects" name="stats_projects" required
+                            value="{{ settings.stats_projects or '12+' }}"
+                            class="w-full px-4 py-2 bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-black focus:bg-white transition-all duration-200 text-center">
+                    </div>
+                    <div>
+                        <label for="stats_tech" class="block text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-2">Tech Learned *</label>
+                        <input type="text" id="stats_tech" name="stats_tech" required
+                            value="{{ settings.stats_tech or '15+' }}"
+                            class="w-full px-4 py-2 bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-black focus:bg-white transition-all duration-200 text-center">
+                    </div>
+                    <div>
+                        <label for="stats_years" class="block text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-2">Years of Learning *</label>
+                        <input type="text" id="stats_years" name="stats_years" required
+                            value="{{ settings.stats_years or '4+' }}"
+                            class="w-full px-4 py-2 bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-black focus:bg-white transition-all duration-200 text-center">
+                    </div>
+                    <div>
+                        <label for="stats_clients" class="block text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-2">Happy Clients *</label>
+                        <input type="text" id="stats_clients" name="stats_clients" required
+                            value="{{ settings.stats_clients or '10+' }}"
+                            class="w-full px-4 py-2 bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-black focus:bg-white transition-all duration-200 text-center">
+                    </div>
+                </div>
+
+                <!-- Asset File uploads -->
+                <div class="mb-6 border-b border-slate-100 pb-4 pt-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-black">Asset Media Uploads</h4>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Profile Image</label>
+                        {% if settings.profile_image %}
+                        <div class="w-24 h-24 bg-slate-50 border border-slate-200 overflow-hidden mb-3">
+                            <img src="{{ url_for('static', filename=settings.profile_image) }}" alt="Profile preview" class="w-full h-full object-cover">
+                        </div>
+                        {% endif %}
+                        <input type="file" id="profile_image" name="profile_image"
+                            class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:border file:border-slate-200 file:bg-slate-50 file:text-slate-700 hover:file:bg-slate-100 file:transition-all cursor-pointer">
+                        <span class="text-[9px] text-slate-400 mt-1 block">Valid file types: png, jpg, jpeg, gif, webp.</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">CV File Document</label>
+                        {% if settings.cv_url %}
+                        <div class="mb-3">
+                            <a href="{{ url_for('static', filename=settings.cv_url) }}" target="_blank" class="text-xs text-slate-500 hover:text-black font-semibold">
+                                <i class="fa-solid fa-file-pdf text-rose-600 mr-1.5 text-base"></i> View Current CV Document
+                            </a>
+                        </div>
+                        {% endif %}
+                        <input type="file" id="cv_file" name="cv_file"
+                            class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:border file:border-slate-200 file:bg-slate-50 file:text-slate-700 hover:file:bg-slate-100 file:transition-all cursor-pointer">
+                        <span class="text-[9px] text-slate-400 mt-1 block">Valid file types: pdf, doc, docx.</span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit"
+                        class="px-8 py-3.5 bg-black text-white text-xs font-bold uppercase tracking-widest border border-black hover:bg-white hover:text-black transition-all duration-300">
+                        Save Site Configurations
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Right Panel: Password change and auth setting -->
+    <div class="lg:col-span-4 bg-white border border-slate-200 p-6 shadow-sm">
+        <div class="mb-6 border-b border-slate-100 pb-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-black">Change Admin Password</h3>
+            <p class="text-[11px] text-slate-400 mt-1">Provide the current credentials to establish a new system password.</p>
+        </div>
+
+        <form action="{{ url_for('admin_settings') }}" method="POST" class="space-y-4">
+            <!-- Current Password -->
+            <div>
+                <label for="current_password" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Current Password</label>
+                <input type="password" id="current_password" name="current_password"
+                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                    placeholder="••••••••••••">
+            </div>
+
+            <!-- New Password -->
+            <div>
+                <label for="new_password" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">New Password</label>
+                <input type="password" id="new_password" name="new_password"
+                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                    placeholder="••••••••••••">
+            </div>
+
+            <!-- Confirm Password -->
+            <div>
+                <label for="confirm_password" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Confirm New Password</label>
+                <input type="password" id="confirm_password" name="confirm_password"
+                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                    placeholder="••••••••••••">
+            </div>
+
+            <!-- Warning notice -->
+            <div class="p-3 bg-amber-50 border border-amber-200 text-[10px] text-amber-800 leading-normal">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Make sure to select a strong password. Leaving the fields blank will preserve the current password.
+            </div>
+
+            <!-- Submit -->
+            <div class="pt-2">
+                <button type="submit"
+                    class="w-full py-3 bg-black text-white text-xs font-bold uppercase tracking-widest border border-black hover:bg-white hover:text-black transition-all">
+                    Update Password
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if settings.hero_title %}{{ settings.hero_title }}{% else %}Mansurbek Abdullayev{% endif %} | {{ settings.hero_subtitle or 'Full Stack Developer' }}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% if settings.about_bio %}{{ settings.about_bio | truncate(155) }}{% else %}Portfolio website of Mansurbek Abdullayev, Full Stack Python Developer. Building high-quality websites, APIs, and systems.{% endif %}">
+    <meta name="author" content="Mansurbek Abdullayev">
+    <meta name="keywords" content="Mansurbek Abdullayev, Full Stack Developer, Python Flask, SQLite, Web Developer Portfolio, Python Developer, Tashkent, Uzbekistan">
+    
+    <!-- Favicon Placeholder (Black letter 'M') -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 font-family=%22sans-serif%22 font-weight=%22bold%22 fill=%22black%22>M</text></svg>">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#f8fafc',
+                            dark: '#000000',
+                            gray: '#1e293b',
+                            accent: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body class="bg-slate-50 text-slate-900 selection:bg-black selection:text-white flex flex-col min-h-screen">
+
+    {% if not error_page and not admin_layout %}
+    <!-- Black Preloader Animation -->
+    <div id="preloader">
+        <div class="loader-spinner"></div>
+    </div>
+    {% endif %}
+
+    <!-- Flash Messages Container -->
+    <div class="fixed top-6 right-6 z-[99999] flex flex-col gap-3 max-w-sm w-full">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-alert p-4 rounded shadow-lg border-l-4 transition-all duration-500 bg-white flex items-start justify-between gap-3 
+                        {% if category == 'success' %}border-emerald-500 text-emerald-900{% elif category == 'warning' %}border-amber-500 text-amber-900{% else %}border-rose-500 text-rose-900{% endif %}"
+                        role="alert">
+                        <div class="flex items-center gap-2">
+                            {% if category == 'success' %}
+                                <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+                            {% elif category == 'warning' %}
+                                <i class="fa-solid fa-circle-exclamation text-amber-500 text-lg"></i>
+                            {% else %}
+                                <i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>
+                            {% endif %}
+                            <p class="text-sm font-medium">{{ message }}</p>
+                        </div>
+                        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-black hover-interactive">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    {% if error_page %}
+    <!-- 404 Error View -->
+    <div class="flex-grow flex items-center justify-center bg-white px-6">
+        <div class="text-center">
+            <span class="text-9xl font-extrabold text-black block tracking-widest">404</span>
+            <h1 class="text-2xl font-bold text-slate-800 uppercase mt-4 mb-2 tracking-wider">Page Not Found</h1>
+            <p class="text-slate-500 max-w-md mx-auto mb-8 text-sm">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+            <a href="/" class="px-6 py-3 bg-black text-white text-xs font-semibold uppercase tracking-widest border border-black hover:bg-white hover:text-black transition-all duration-300 inline-block">
+                Back to Home
+            </a>
+        </div>
+    </div>
+    {% else %}
+        <!-- Dynamic Content Injection -->
+        {% block content %}{% endblock %}
+    {% endif %}
+
+    <!-- Scroll to Top Button -->
+    <a href="#" id="scroll-to-top" class="hover-interactive" aria-label="Scroll to Top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </a>
+
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

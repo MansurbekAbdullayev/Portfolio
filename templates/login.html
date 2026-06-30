@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12 relative overflow-hidden">
+    <!-- Grid Overlay -->
+    <div class="grid-bg"></div>
+
+    <!-- Login Card Container -->
+    <div class="relative z-10 w-full max-w-md bg-white border border-slate-200 p-8 md:p-10 shadow-lg rounded-none transition-all duration-300 hover:border-black">
+        
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold tracking-widest text-black mb-1 uppercase">ADMIN PORTAL</h1>
+            <p class="text-slate-500 text-xs tracking-wider uppercase">Mansurbek Abdullayev</p>
+        </div>
+
+        <!-- Form -->
+        <form action="{{ url_for('login') }}" method="POST" class="space-y-6">
+            <div>
+                <label for="username" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Username</label>
+                <input type="text" id="username" name="username" required
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 hover-interactive"
+                    placeholder="Enter admin username">
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <label for="password" class="block text-xs font-semibold tracking-wider text-black uppercase">Password</label>
+                </div>
+                <input type="password" id="password" name="password" required
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 hover-interactive"
+                    placeholder="••••••••••••">
+            </div>
+
+            <button type="submit"
+                class="w-full py-4 bg-black text-white text-xs font-semibold tracking-widest uppercase border border-black hover:bg-white hover:text-black transition-all duration-300 hover-interactive">
+                Sign In
+            </button>
+        </form>
+
+        <!-- Footer link -->
+        <div class="mt-8 text-center">
+            <a href="/" class="text-xs text-slate-400 hover:text-black transition-all duration-200 hover-interactive">
+                <i class="fa-solid fa-arrow-left-long mr-2"></i> Return to Homepage
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

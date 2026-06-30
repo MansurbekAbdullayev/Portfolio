@@ -1,0 +1,160 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block header_title %}{{ title }}{% endblock %}
+
+{% block admin_content %}
+<div class="bg-white border border-slate-200 p-6 md:p-8 max-w-3xl shadow-sm">
+    <div class="mb-6 pb-4 border-b border-slate-100 flex justify-between items-center">
+        <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-black">Project Details Form</h3>
+            <p class="text-[11px] text-slate-400 mt-1">Please fill in the project characteristics. High-resolution images are recommended.</p>
+        </div>
+        <a href="{{ url_for('admin_projects') }}" class="text-xs text-slate-400 hover:text-black">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Cancel & Return
+        </a>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        <!-- Title -->
+        <div class="space-y-4">
+            <div>
+                <label for="title" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Project Title (EN) *</label>
+                <input type="text" id="title" name="title" required
+                    value="{% if project %}{{ project.title }}{% endif %}"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                    placeholder="E.g., Corporate CRM Automation">
+            </div>
+            <div>
+                <label for="title_uz" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Project Title (UZ) *</label>
+                <input type="text" id="title_uz" name="title_uz" required
+                    value="{% if project %}{{ project.title_uz }}{% endif %}"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                    placeholder="Masalan, CRM Avtomatlashtirish">
+            </div>
+            <div>
+                <label for="title_ru" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Project Title (RU) *</label>
+                <input type="text" id="title_ru" name="title_ru" required
+                    value="{% if project %}{{ project.title_ru }}{% endif %}"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                    placeholder="Например, Автоматизация CRM">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Category -->
+            <div class="space-y-4">
+                <div>
+                    <label for="category" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Category (EN) *</label>
+                    <select id="category" name="category" required
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200">
+                        <option value="Web Sites" {% if project and project.category == 'Web Sites' %}selected{% endif %}>Web Sites</option>
+                        <option value="Telegram Bots" {% if project and project.category == 'Telegram Bots' %}selected{% endif %}>Telegram Bots</option>
+                        <option value="CRM Systems" {% if project and project.category == 'CRM Systems' %}selected{% endif %}>CRM Systems</option>
+                        <option value="APIs" {% if project and project.category == 'APIs' %}selected{% endif %}>APIs</option>
+                        <option value="UI/UX" {% if project and project.category == 'UI/UX' %}selected{% endif %}>UI/UX</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="category_uz" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Category (UZ) *</label>
+                    <input type="text" id="category_uz" name="category_uz" required
+                        value="{% if project %}{{ project.category_uz }}{% endif %}"
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                        placeholder="Masalan, Veb Saytlar">
+                </div>
+                <div>
+                    <label for="category_ru" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Category (RU) *</label>
+                    <input type="text" id="category_ru" name="category_ru" required
+                        value="{% if project %}{{ project.category_ru }}{% endif %}"
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                        placeholder="Например, Веб Сайты">
+                </div>
+            </div>
+
+            <!-- Tech Stack -->
+            <div>
+                <label for="tech_stack" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Tech Stack (comma-separated) *</label>
+                <input type="text" id="tech_stack" name="tech_stack" required
+                    value="{% if project %}{{ project.tech_stack }}{% endif %}"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                    placeholder="E.g., Flask, SQL, Tailwind, JS">
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="space-y-4">
+            <div>
+                <label for="description" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Project Description (EN) *</label>
+                <textarea id="description" name="description" rows="3" required
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 resize-none"
+                    placeholder="Provide a descriptive overview...">{% if project %}{{ project.description }}{% endif %}</textarea>
+            </div>
+            <div>
+                <label for="description_uz" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Project Description (UZ) *</label>
+                <textarea id="description_uz" name="description_uz" rows="3" required
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 resize-none"
+                    placeholder="Loyiha haqida malumot...">{% if project %}{{ project.description_uz }}{% endif %}</textarea>
+            </div>
+            <div>
+                <label for="description_ru" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Project Description (RU) *</label>
+                <textarea id="description_ru" name="description_ru" rows="3" required
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200 resize-none"
+                    placeholder="Описание проекта...">{% if project %}{{ project.description_ru }}{% endif %}</textarea>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- GitHub Link -->
+            <div>
+                <label for="github_url" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">GitHub URL</label>
+                <input type="url" id="github_url" name="github_url"
+                    value="{% if project %}{{ project.github_url or '' }}{% endif %}"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                    placeholder="https://github.com/username/project">
+            </div>
+
+            <!-- Demo Link -->
+            <div>
+                <label for="demo_url" class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Live Demo URL</label>
+                <input type="url" id="demo_url" name="demo_url"
+                    value="{% if project %}{{ project.demo_url or '' }}{% endif %}"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-black focus:bg-white transition-all duration-200"
+                    placeholder="https://project.com">
+            </div>
+        </div>
+
+        <!-- Image Upload & Preview -->
+        <div>
+            <label class="block text-xs font-semibold tracking-wider text-black uppercase mb-2">Project Image</label>
+            {% if project and project.image_url %}
+            <div class="mb-4">
+                <span class="block text-[10px] text-slate-400 mb-1 uppercase font-bold">Current Image Preview:</span>
+                <div class="w-48 bg-slate-50 border border-slate-200 p-1">
+                    <img src="{{ url_for('static', filename=project.image_url) }}" alt="Project Image" class="w-full object-cover">
+                </div>
+            </div>
+            {% endif %}
+            
+            <input type="file" id="image_file" name="image_file" {% if not project %}required{% endif %}
+                class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:border file:border-slate-200 file:bg-slate-50 file:text-slate-700 hover:file:bg-slate-100 hover:file:border-black file:transition-all cursor-pointer">
+            <span class="text-[10px] text-slate-400 block mt-2">Allowed file formats: png, jpg, jpeg, gif, webp. Limit file sizes for faster page loading.</span>
+        </div>
+
+        <!-- Featured Flag Checkbox -->
+        <div class="flex items-center gap-3 pt-2">
+            <input type="checkbox" id="is_featured" name="is_featured" value="1"
+                {% if project and project.is_featured == 1 %}checked{% endif %}
+                class="w-4 h-4 text-black border-slate-300 focus:ring-black">
+            <label for="is_featured" class="text-xs font-bold text-black uppercase">Mark project as Featured on homepage</label>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4">
+            <button type="submit"
+                class="px-8 py-3.5 bg-black text-white text-xs font-bold uppercase tracking-widest border border-black hover:bg-white hover:text-black transition-all duration-300">
+                {% if project %}Save Changes{% else %}Create Project{% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
