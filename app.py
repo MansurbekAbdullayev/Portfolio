@@ -791,11 +791,20 @@ def admin_messages():
 @app.route('/admin/messages/read/<int:id>', methods=['POST'])
 @login_required
 def message_read(id):
-    msg = db_query('SELECT is_read FROM messages WHERE id = ?', (id,), one=True)
+    msg = db_query(
+        'SELECT is_read FROM messages WHERE id = ?',
+        (id,),
+        one=True
+    )
+
     if msg:
         new_status = 1 if msg['is_read'] == 0 else 0
-        db_execute('UPDATE messages SET is_read = ? WHERE id = ?', (new_status, id))
+        db_execute(
+            'UPDATE messages SET is_read = ? WHERE id = ?',
+            (new_status, id)
+        )
         flash('Message status updated.', 'success')
+
     return redirect(url_for('admin_messages'))
 
 @app.route('/admin/messages/delete/<int:id>', methods=['POST'])
